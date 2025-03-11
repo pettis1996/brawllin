@@ -16,8 +16,21 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 
-bg_image = pygame.image.load("assets/images/background/bg-china.jpg")
+WARRIOR_SIZE = 162
+WARRIOR_DATA = [WARRIOR_SIZE]
+WIZARD_SIZE = 250
+WIZARD_DATA = [WIZARD_SIZE]
+
+bg_image = pygame.image.load("assets/images/background/bg-china.jpg").convert_alpha()
 scaled_bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
+
+# Sheets with all animations
+warrior_sheet = pygame.image.load("assets/images/warrior/Sprites/warrior.png").convert_alpha()
+wizard_sheet = pygame.image.load("assets/images/wizard/Sprites/wizard.png").convert_alpha()
+
+# Number of steps in each animation
+WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
+WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
 
 def draw_bg():
     screen.blit(scaled_bg_image, (0, 0))
@@ -29,8 +42,8 @@ def draw_health_bar(health, x, y):
     pygame.draw.rect(screen, RED, (x, y, 400, 30))
     pygame.draw.rect(screen, YELLOW, (x, y, 400 * ratio, 30))
     
-fighter_1 = Fighter(200, 310)
-fighter_2 = Fighter(700, 310)
+fighter_1 = Fighter(200, 310, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
+fighter_2 = Fighter(700, 310, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
 
 game_running = True
 while game_running:
