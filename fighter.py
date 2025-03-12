@@ -83,12 +83,15 @@ class Fighter:
     
     # Animation updates
     def update(self):
-        animation_cooldown = 500
+        animation_cooldown = 100
         self.image = self.animation_list[self.action][self.frame_index]
 
         if pygame.time.get_ticks() - self.update_time > animation_cooldown:
             self.frame_index += 1
             self.update_time = pygame.time.get_ticks()
+        
+        if self.frame_index >= len(self.animation_list[self.action]):
+            self.frame_index = 0
     
     def attack(self, surface, target):
         self.attacking = True
