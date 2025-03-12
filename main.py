@@ -17,9 +17,13 @@ YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 
 WARRIOR_SIZE = 162
-WARRIOR_DATA = [WARRIOR_SIZE]
+WARRIOR_SCALE = 4
+WARRIOR_OFFSET = [72, 56]
+WARRIOR_DATA = [WARRIOR_SIZE, WARRIOR_SCALE, WARRIOR_OFFSET]
 WIZARD_SIZE = 250
-WIZARD_DATA = [WIZARD_SIZE]
+WIZARD_SCALE = 3
+WIZARD_OFFSET = [112, 107]
+WIZARD_DATA = [WIZARD_SIZE, WIZARD_SCALE, WIZARD_OFFSET]
 
 bg_image = pygame.image.load("assets/images/background/bg-china.jpg").convert_alpha()
 scaled_bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -56,6 +60,9 @@ while game_running:
     
     fighter_1.move(SCREEN_WIDTH, SCREEN_HEIGHT, screen, fighter_2)
     fighter_2.move(SCREEN_WIDTH, SCREEN_HEIGHT, screen, fighter_1)
+    
+    fighter_1.update()
+    fighter_2.update()
     
     fighter_1.draw(screen)
     fighter_2.draw(screen)
