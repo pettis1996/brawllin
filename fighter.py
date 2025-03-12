@@ -13,6 +13,7 @@ class Fighter:
         self.update_time = pygame.time.get_ticks()
         self.rect = pygame.Rect((x, y, 80, 180))
         self.vel_y = 0
+        self.running = False
         self.jump = False
         self.attacking = False
         self.attack_type = 0
@@ -35,6 +36,7 @@ class Fighter:
         
         dx = 0
         dy = 0
+        self.running = False
         
         key = pygame.key.get_pressed()
         
@@ -43,8 +45,10 @@ class Fighter:
             # Movement on X axis
             if key[pygame.K_a]:
                 dx = -SPEED
+                self.running = True
             if key[pygame.K_d]:
                 dx = SPEED
+                self.running = True
                 
             # Movement on Y axis - Jump
             if key[pygame.K_w] and not self.jump:
@@ -83,6 +87,11 @@ class Fighter:
     
     # Animation updates
     def update(self):
+        if self.running:
+            self.update_action(1)
+        else: 
+            self.update_action(0)
+        
         animation_cooldown = 100
         self.image = self.animation_list[self.action][self.frame_index]
 
@@ -102,6 +111,12 @@ class Fighter:
         
         pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
        
+    def update_action(self, new_action):
+        if new_action != self.action:
+            self.action = new_action  
+            self.frame_index = 0
+            self.update_time = pygame.time.get_ticks()
+    
     def draw(self, surface):
         img = pygame.transform.flip(self.image, self.flip, False)
         pygame.draw.rect(surface, (255, 0, 0), self.rect)
