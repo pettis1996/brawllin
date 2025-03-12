@@ -17,7 +17,10 @@ class Fighter:
         self.jump = False
         self.attacking = False
         self.attack_type = 0
+        self.attack_cooldown = 0
+        self.hit = False
         self.health = 100
+        self.alive = True
         
     def load_images(self, sprite_sheet, animation_steps):
         # Extract images from Sprite sheet
@@ -36,6 +39,7 @@ class Fighter:
         
         dx = 0
         dy = 0
+        
         self.running = False
         self.attack_type = 0
         
@@ -83,12 +87,22 @@ class Fighter:
         else:
             self.flip = True
         
+        # Apply attack cooldown
+        if self.attack_cooldown > 0:
+            self.attack_cooldown -= 1
+        
         self.rect.x += dx
         self.rect.y += dy
     
     # Animation updates
     def update(self):
-        if self.attacking:
+        if self.health <= 0:
+            self.health = 0
+            self.alive = False
+            self.update_action(6)
+        elif self.hit:
+            self.update_action(5)
+        elif self.attacking:
             if self.attack_type == 1:
                 self.update_action(3)
             elif self.attack_type == 2:
@@ -109,15 +123,31 @@ class Fighter:
         
         if self.frame_index >= len(self.animation_list[self.action]):
             self.frame_index = 0
+            
+            if not self.alive:
+                self.frame_index = len(self.animation_list[self.action]) - 1
+            
+            # Check if an attack was executed
+            if self.action == 3 or self.action == 4:
+                self.attacking = False
+                self.attack_cooldown = 20
+            
+            # Check if player is hit
+            if self.action == 5:
+                self.hit = False
+                self.attacking = False
+                self.attack_cooldown = 20
     
     def attack(self, surface, target):
-        self.attacking = True
-        attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
-        
-        if attacking_rect.colliderect(target.rect):
-            target.health -= 10
-        
-        pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+        if self.attack_cooldown == 0:
+            self.attacking = True
+            attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
+            
+            if attacking_rect.colliderect(target.rect):
+                target.health -= 10
+                target.hit = True
+            
+            pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
        
     def update_action(self, new_action):
         if new_action != self.action:
