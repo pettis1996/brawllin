@@ -34,7 +34,7 @@ class Fighter:
             animation_list.append(temp_img_list)
         return animation_list
         
-    def move(self, screen_width, screen_height, surface, target):
+    def move(self, screen_width, screen_height, surface, target, round_over):
         SPEED = 10
         GRAVITY = 2
         
@@ -47,7 +47,7 @@ class Fighter:
         key = pygame.key.get_pressed()
         
         # Cannot perform movement when attacking
-        if not self.attacking and self.alive:
+        if not self.attacking and self.alive and not round_over:
             # Movement on X axis
             
             # Player 1 Movement
@@ -107,7 +107,7 @@ class Fighter:
             dy = screen_height - 110 - self.rect.bottom
         
         # The side that the players are facing
-        if target.rect.centerx > self.rect.centerx:
+        if target.rect.centerx > self.rect.centerx and self.alive:
             self.flip = False
         else:
             self.flip = True
