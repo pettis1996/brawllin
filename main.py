@@ -24,6 +24,9 @@ intro_count = 3
 last_count_update = pygame.time.get_ticks()
 fight_text_count = 50
 last_fight_text_count = pygame.time.get_ticks()
+score = [0, 0] # [P1, P2]
+round_over = False
+ROUND_OVER_COUNTDOWN = 2000 # ms
 
 # Warrior Variables
 WARRIOR_SIZE = 162
@@ -99,6 +102,18 @@ while game_running:
     
     fighter_1.draw(screen)
     fighter_2.draw(screen)
+    
+    if not round_over:
+        if not fighter_1.alive:
+            score[1] += 1
+            round_over = True
+            round_over_time = pygame.time.get_ticks()
+        elif not fighter_2.alive:
+            score[0] += 1
+            round_over = True
+            round_over_time = pygame.time.get_ticks()
+    else:
+        draw_text("VICTORY", count_font, RED, SCREEN_WIDTH / 3 + 40, SCREEN_HEIGHT / 3)
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
