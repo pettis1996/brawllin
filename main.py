@@ -118,8 +118,8 @@ while game_running:
                 draw_text("FIGHT", count_font, RED, SCREEN_WIDTH / 3 + 80, SCREEN_HEIGHT / 3)
                 
         # Call move() on both players
-        fighter_1.move(SCREEN_WIDTH, SCREEN_HEIGHT, screen, fighter_2, round_over)
-        fighter_2.move(SCREEN_WIDTH, SCREEN_HEIGHT, screen, fighter_1, round_over)
+        fighter_1.move(SCREEN_WIDTH, SCREEN_HEIGHT, fighter_2, round_over)
+        fighter_2.move(SCREEN_WIDTH, SCREEN_HEIGHT, fighter_1, round_over)
     else:
         draw_text(str(intro_count), count_font, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
         if (pygame.time.get_ticks() - last_count_update) >= 1000:
