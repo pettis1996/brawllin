@@ -49,6 +49,17 @@ scaled_bg_image = pygame.transform.scale(bg_image, (SCREEN_WIDTH, SCREEN_HEIGHT)
 warrior_sheet = pygame.image.load("assets/images/warrior/Sprites/warrior.png").convert_alpha()
 wizard_sheet = pygame.image.load("assets/images/wizard/Sprites/wizard.png").convert_alpha()
 
+# Attack skill images
+warrior_attack_1_image = pygame.image.load("assets/images/warrior/skills/warrior_attack_1.png").convert_alpha()
+warrior_attack_1_scaled_image = pygame.transform.scale(warrior_attack_1_image, (60, 60)).convert_alpha()
+warrior_attack_2_image = pygame.image.load("assets/images/warrior/skills/warrior_attack_2.png").convert_alpha()
+warrior_attack_2_scaled_image = pygame.transform.scale(warrior_attack_2_image, (60, 60)).convert_alpha()
+
+wizard_attack_1_image = pygame.image.load("assets/images/wizard/skills/wizard_attack_1.png").convert_alpha()
+wizard_attack_1_scaled_image = pygame.transform.scale(wizard_attack_1_image, (60, 60)).convert_alpha()
+wizard_attack_2_image = pygame.image.load("assets/images/wizard/skills/wizard_attack_2.png").convert_alpha()
+wizard_attack_2_scaled_image = pygame.transform.scale(wizard_attack_2_image, (60, 60)).convert_alpha()
+
 # Number of steps in each animation
 WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
 WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
@@ -87,6 +98,10 @@ def draw_health_bar(health, x, y):
 fighter_1 = Fighter(1, 200, 310, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
 fighter_2 = Fighter(2, 700, 310, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
 
+def draw_attack_slot(attack_image, attack_button, x, y):
+    pygame.draw.rect(screen, RED, (x, y, 60, 60))
+    screen.blit(attack_image, (x, y))
+
 # True if the game is running
 game_running = True
 while game_running:
@@ -107,6 +122,12 @@ while game_running:
     # Draw Round Count
     draw_text("ROUND", score_font, RED, 465, 10)
     draw_text(f"{current_round}", score_font, RED, 497, 40)
+    
+    # Draw Action Bars
+    draw_attack_slot(warrior_attack_1_scaled_image, "R", 20, 520)
+    draw_attack_slot(warrior_attack_2_scaled_image, "T", 100, 520)
+    draw_attack_slot(wizard_attack_1_scaled_image, ".", 920, 520)
+    draw_attack_slot(wizard_attack_2_scaled_image, ".", 840, 520)
     
     # If countdown at the beginning is over
     if intro_count <= 0:
