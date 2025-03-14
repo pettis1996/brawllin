@@ -2,18 +2,18 @@ import pygame
 
 class Fighter:
     def __init__(self, player, x, y, data, sprite_sheet, animation_steps):
-        self.player = player
+        self.player = player # 1: Player 1, 2: Player 2
         self.size = data[0]
         self.image_scale = data[1]
         self.offset = data[2]
-        self.flip = False
+        self.flip = False # Flip to face same direction
         self.animation_list = self.load_images(sprite_sheet, animation_steps)
         self.action = 0 # 0: idle, 1: run, 2: jump, 3: attack1, 4: attack2, 5: hit, 6: death
-        self.frame_index = 0
+        self.frame_index = 0 # Used for animating the images to move on the list of animations
         self.image = self.animation_list[self.action][self.frame_index]
         self.update_time = pygame.time.get_ticks()
-        self.rect = pygame.Rect((x, y, 80, 180))
-        self.vel_y = 0
+        self.rect = pygame.Rect((x, y, 80, 180)) # Player hit box
+        self.vel_y = 0 # Velocity on Y axis for jump
         self.running = False
         self.jump = False
         self.attacking = False
@@ -34,7 +34,7 @@ class Fighter:
             animation_list.append(temp_img_list)
         return animation_list
         
-    def move(self, screen_width, screen_height, surface, target, round_over):
+    def move(self, screen_width, screen_height, target, round_over):
         SPEED = 10
         GRAVITY = 2
         
@@ -66,11 +66,11 @@ class Fighter:
                     
                 # Attack
                 if key[pygame.K_r] or key[pygame.K_t]:
-                    self.attack(target)
                     if key[pygame.K_r]:
                         self.attack_type = 1
                     if key[pygame.K_t]:
                         self.attack_type = 2
+                    self.attack(target)
         
             if self.player == 2:
                     if key[pygame.K_LEFT]:
@@ -87,11 +87,11 @@ class Fighter:
                         
                     # Attack
                     if key[pygame.K_PERIOD] or key[pygame.K_SLASH]:
-                        self.attack(target)
                         if key[pygame.K_PERIOD]:
                             self.attack_type = 1
                         if key[pygame.K_SLASH]:
                             self.attack_type = 2
+                        self.attack(target)
         
         self.vel_y += GRAVITY
         dy += self.vel_y
@@ -124,20 +124,20 @@ class Fighter:
         if self.health <= 0:
             self.health = 0
             self.alive = False
-            self.update_action(6)
+            self.update_action(6) # Player dead
         elif self.hit:
-            self.update_action(5)
+            self.update_action(5) # Player got hit
         elif self.attacking:
             if self.attack_type == 1:
-                self.update_action(3)
+                self.update_action(3) # Player attacks with attack 1
             elif self.attack_type == 2:
-                self.update_action(4)
+                self.update_action(4) # Player attacks with attack 2
         elif self.jump:
-            self.update_action(2)
+            self.update_action(2) # Player jumps
         elif self.running:
-            self.update_action(1)
+            self.update_action(1) # Player moves
         else: 
-            self.update_action(0)
+            self.update_action(0) # Player is idle
         
         animation_cooldown = 100
         self.image = self.animation_list[self.action][self.frame_index]
@@ -169,7 +169,10 @@ class Fighter:
             attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
             
             if attacking_rect.colliderect(target.rect):
-                target.health -= 10
+                if self.attack_type == 1:
+                    target.health -= 10
+                elif self.attack_type == 2:
+                    target.health -= 20
                 target.hit = True
        
     def update_action(self, new_action):
