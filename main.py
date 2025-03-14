@@ -84,6 +84,7 @@ def draw_bg():
     screen.blit(scaled_bg_image, (0, 0))
     
 """
+    Draw the player's health bar
     health: Integer -> Fighter's health
     x: Integer -> Coordinates on X axis
     y: Integer -> Coordinates on Y axis
@@ -98,6 +99,13 @@ def draw_health_bar(health, x, y):
 fighter_1 = Fighter(1, 200, 310, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
 fighter_2 = Fighter(2, 700, 310, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
 
+"""
+    Draw player's action bar
+    attack_image: Pygame Image -> The skill image for the attack
+    attack_button: String -> The button used for the attack
+    x: Coordinates on X axis
+    y: Coordinates on Y axis
+"""
 def draw_attack_slot(attack_image, attack_button, x, y):
     pygame.draw.rect(screen, RED, (x, y, 60, 60))
     screen.blit(attack_image, (x, y))
