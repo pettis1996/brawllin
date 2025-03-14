@@ -66,7 +66,7 @@ class Fighter:
                     
                 # Attack
                 if key[pygame.K_r] or key[pygame.K_t]:
-                    self.attack(surface, target)
+                    self.attack(target)
                     if key[pygame.K_r]:
                         self.attack_type = 1
                     if key[pygame.K_t]:
@@ -87,7 +87,7 @@ class Fighter:
                         
                     # Attack
                     if key[pygame.K_PERIOD] or key[pygame.K_SLASH]:
-                        self.attack(surface, target)
+                        self.attack(target)
                         if key[pygame.K_PERIOD]:
                             self.attack_type = 1
                         if key[pygame.K_SLASH]:
@@ -163,7 +163,7 @@ class Fighter:
                 self.attacking = False
                 self.attack_cooldown = 20
     
-    def attack(self, surface, target):
+    def attack(self, target):
         if self.attack_cooldown == 0:
             self.attacking = True
             attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
