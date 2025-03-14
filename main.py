@@ -1,5 +1,6 @@
 import pygame
 from fighter import Fighter
+from ui import UI
 
 pygame.init()
 
@@ -68,47 +69,10 @@ WIZARD_ANIMATION_STEPS = [8, 8, 1, 8, 8, 3, 7]
 count_font = pygame.font.Font("assets/fonts/turok.ttf", 80)
 score_font = pygame.font.Font("assets/fonts/turok.ttf", 30)
 
-"""
-    text: String -> Text to draw
-    font: Pygame Font -> Text Font
-    text_col: Tuple | string -> Text Color
-    x: Integer -> Coordinates on X axis
-    y: Integer -> Coordinates on Y axis
-"""
-def draw_text(text, font, text_col, x, y):
-    img = font.render(text, True, text_col)
-    screen.blit(img, (x, y))
-
-# Function to draw the background image
-def draw_bg():
-    screen.blit(scaled_bg_image, (0, 0))
-    
-"""
-    Draw the player's health bar
-    health: Integer -> Fighter's health
-    x: Integer -> Coordinates on X axis
-    y: Integer -> Coordinates on Y axis
-"""
-def draw_health_bar(health, x, y):
-    ratio = health / 100
-    
-    pygame.draw.rect(screen, WHITE, (x - 2, y - 2, 404, 34))
-    pygame.draw.rect(screen, RED, (x, y, 400, 30))
-    pygame.draw.rect(screen, YELLOW, (x, y, 400 * ratio, 30))
+ui = UI(screen)
     
 fighter_1 = Fighter(1, 200, 310, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
 fighter_2 = Fighter(2, 700, 310, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
-
-"""
-    Draw player's action bar
-    attack_image: Pygame Image -> The skill image for the attack
-    attack_button: String -> The button used for the attack
-    x: Coordinates on X axis
-    y: Coordinates on Y axis
-"""
-def draw_attack_slot(attack_image, attack_button, x, y):
-    pygame.draw.rect(screen, RED, (x, y, 60, 60))
-    screen.blit(attack_image, (x, y))
 
 # True if the game is running
 game_running = True
@@ -117,25 +81,25 @@ while game_running:
     clock.tick(FPS)
     
     # Draw the background
-    draw_bg()
+    ui.draw_bg(scaled_bg_image)
     
     # Draw Player Health Bars
-    draw_health_bar(fighter_1.health, 20, 20)
-    draw_health_bar(fighter_2.health, 580, 20)
+    ui.draw_health_bar(fighter_1.health, 20, 20)
+    ui.draw_health_bar(fighter_2.health, 580, 20)
     
     # Draw Player Scores
-    draw_text("P1: " + str(score[0]), score_font, RED, 20, 60)
-    draw_text("P2: " + str(score[1]), score_font, RED, 925, 60)
+    ui.draw_text("P1: " + str(score[0]), score_font, RED, 20, 60)
+    ui.draw_text("P2: " + str(score[1]), score_font, RED, 925, 60)
     
     # Draw Round Count
-    draw_text("ROUND", score_font, RED, 465, 10)
-    draw_text(f"{current_round}", score_font, RED, 497, 40)
+    ui.draw_text("ROUND", score_font, RED, 465, 10)
+    ui.draw_text(f"{current_round}", score_font, RED, 497, 40)
     
     # Draw Action Bars
-    draw_attack_slot(warrior_attack_1_scaled_image, "R", 20, 520)
-    draw_attack_slot(warrior_attack_2_scaled_image, "T", 100, 520)
-    draw_attack_slot(wizard_attack_1_scaled_image, ".", 920, 520)
-    draw_attack_slot(wizard_attack_2_scaled_image, ".", 840, 520)
+    ui.draw_attack_slot(warrior_attack_1_scaled_image, "R", 20, 520)
+    ui.draw_attack_slot(warrior_attack_2_scaled_image, "T", 100, 520)
+    ui.draw_attack_slot(wizard_attack_1_scaled_image, ".", 920, 520)
+    ui.draw_attack_slot(wizard_attack_2_scaled_image, ".", 840, 520)
     
     # If countdown at the beginning is over
     if intro_count <= 0:
@@ -144,17 +108,17 @@ while game_running:
             if (pygame.time.get_ticks() - last_fight_text_count) >= 1:
                 fight_text_count -= 1
                 last_fight_text_count = pygame.time.get_ticks()
-                draw_text("FIGHT", count_font, RED, SCREEN_WIDTH / 3 + 80, SCREEN_HEIGHT / 3)
+                ui.draw_text("FIGHT", count_font, RED, SCREEN_WIDTH / 3 + 80, SCREEN_HEIGHT / 3)
                 
         # Call move() on both players
         fighter_1.move(SCREEN_WIDTH, SCREEN_HEIGHT, fighter_2, round_over)
         fighter_2.move(SCREEN_WIDTH, SCREEN_HEIGHT, fighter_1, round_over)
     else:
-        draw_text(str(intro_count), count_font, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
+        ui.draw_text(str(intro_count), count_font, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
         if (pygame.time.get_ticks() - last_count_update) >= 1000:
             intro_count -= 1
             last_count_update = pygame.time.get_ticks()
-            draw_text(str(intro_count), count_font, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
+            ui.draw_text(str(intro_count), count_font, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 3)
     
     fighter_1.update()
     fighter_2.update()
@@ -173,7 +137,7 @@ while game_running:
             round_over = True
             round_over_time = pygame.time.get_ticks()
     else:
-        draw_text("VICTORY", count_font, RED, SCREEN_WIDTH / 3 + 40, SCREEN_HEIGHT / 3)
+        ui.draw_text("VICTORY", count_font, RED, SCREEN_WIDTH / 3 + 40, SCREEN_HEIGHT / 3)
         if pygame.time.get_ticks() - round_over_time > ROUND_OVER_COUNTDOWN:
             round_over = False
             intro_count = 3
