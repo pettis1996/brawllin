@@ -27,6 +27,7 @@ last_fight_text_count = pygame.time.get_ticks()
 score = [0, 0] # [P1, P2]
 round_over = False
 ROUND_OVER_COUNTDOWN = 2000 # ms
+current_round = 1
 
 # Warrior Variables
 WARRIOR_SIZE = 162
@@ -79,12 +80,17 @@ while game_running:
     
     draw_bg()
     
+    # Draw Player Health Bars
     draw_health_bar(fighter_1.health, 20, 20)
     draw_health_bar(fighter_2.health, 580, 20)
     
     # Draw Player Scores
     draw_text("P1: " + str(score[0]), score_font, RED, 20, 60)
-    draw_text("P2: " + str(score[1]), score_font, RED, 580, 60)
+    draw_text("P2: " + str(score[1]), score_font, RED, 925, 60)
+    
+    # Draw Round Count
+    draw_text("ROUND", score_font, RED, 465, 10)
+    draw_text(f"{current_round}", score_font, RED, 497, 40)
     
     if intro_count <= 0:
         if fight_text_count >= 0:
@@ -123,6 +129,7 @@ while game_running:
             intro_count = 3
             fighter_1 = Fighter(1, 200, 310, WARRIOR_DATA, warrior_sheet, WARRIOR_ANIMATION_STEPS)
             fighter_2 = Fighter(2, 700, 310, WIZARD_DATA, wizard_sheet, WIZARD_ANIMATION_STEPS)
+            current_round += 1
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
