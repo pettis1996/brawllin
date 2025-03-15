@@ -178,10 +178,10 @@ class Fighter:
             if attacking_rect.colliderect(target.rect):
                 if self.attack_type == 1:
                     target.health -= 10
-                    self.attack1_cooldown = 20  # Set specific cooldown for attack 1
+                    self.attack1_cooldown = 20  
                 elif self.attack_type == 2:
                     target.health -= 20
-                    self.attack2_cooldown = 40  # Set specific cooldown for attack 2
+                    self.attack2_cooldown = 40  
                 target.hit = True
 
     def update_action(self, new_action):
