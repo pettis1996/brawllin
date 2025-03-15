@@ -18,7 +18,8 @@ class Fighter:
         self.jump = False
         self.attacking = False
         self.attack_type = 0
-        self.attack_cooldown = 0
+        self.attack1_cooldown = 0
+        self.attack2_cooldown = 0
         self.hit = False
         self.health = 100
         self.alive = True
@@ -113,8 +114,10 @@ class Fighter:
             self.flip = True
         
         # Apply attack cooldown
-        if self.attack_cooldown > 0:
-            self.attack_cooldown -= 1
+        if self.attack1_cooldown > 0:
+            self.attack1_cooldown -= 1
+        if self.attack2_cooldown > 0:
+            self.attack2_cooldown -= 1
         
         self.rect.x += dx
         self.rect.y += dy
@@ -155,26 +158,32 @@ class Fighter:
             # Check if an attack was executed
             if self.action == 3 or self.action == 4:
                 self.attacking = False
-                self.attack_cooldown = 20
+                if self.action == 3:
+                    self.attack1_cooldown = 20
+                elif self.action == 4:
+                    self.attack2_cooldown = 40
             
             # Check if player is hit
             if self.action == 5:
                 self.hit = False
                 self.attacking = False
-                self.attack_cooldown = 20
+                self.attack1_cooldown = 20
+                self.attack2_cooldown = 40
     
     def attack(self, target):
-        if self.attack_cooldown == 0:
+        if (self.attack_type == 1 and self.attack1_cooldown == 0) or (self.attack_type == 2 and self.attack2_cooldown == 0):
             self.attacking = True
             attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
             
             if attacking_rect.colliderect(target.rect):
                 if self.attack_type == 1:
                     target.health -= 10
+                    self.attack1_cooldown = 20  # Set specific cooldown for attack 1
                 elif self.attack_type == 2:
                     target.health -= 20
+                    self.attack2_cooldown = 40  # Set specific cooldown for attack 2
                 target.hit = True
-       
+
     def update_action(self, new_action):
         if new_action != self.action:
             self.action = new_action  
