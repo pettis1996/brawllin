@@ -171,6 +171,7 @@ class Fighter:
                 self.attack2_cooldown = 40
     
     def attack(self, target):
+        # Different attack cooldown
         if (self.attack_type == 1 and self.attack1_cooldown == 0) or (self.attack_type == 2 and self.attack2_cooldown == 0):
             self.attacking = True
             attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
