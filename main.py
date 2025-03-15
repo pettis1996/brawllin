@@ -52,14 +52,14 @@ wizard_sheet = pygame.image.load("assets/images/wizard/Sprites/wizard.png").conv
 
 # Attack skill images
 warrior_attack_1_image = pygame.image.load("assets/images/warrior/skills/warrior_attack_1.png").convert_alpha()
-warrior_attack_1_scaled_image = pygame.transform.scale(warrior_attack_1_image, (60, 60)).convert_alpha()
+warrior_attack_1_scaled_image = pygame.transform.scale(warrior_attack_1_image, (45, 45)).convert_alpha()
 warrior_attack_2_image = pygame.image.load("assets/images/warrior/skills/warrior_attack_2.png").convert_alpha()
-warrior_attack_2_scaled_image = pygame.transform.scale(warrior_attack_2_image, (60, 60)).convert_alpha()
+warrior_attack_2_scaled_image = pygame.transform.scale(warrior_attack_2_image, (45, 45)).convert_alpha()
 
 wizard_attack_1_image = pygame.image.load("assets/images/wizard/skills/wizard_attack_1.png").convert_alpha()
-wizard_attack_1_scaled_image = pygame.transform.scale(wizard_attack_1_image, (60, 60)).convert_alpha()
+wizard_attack_1_scaled_image = pygame.transform.scale(wizard_attack_1_image, (45, 45)).convert_alpha()
 wizard_attack_2_image = pygame.image.load("assets/images/wizard/skills/wizard_attack_2.png").convert_alpha()
-wizard_attack_2_scaled_image = pygame.transform.scale(wizard_attack_2_image, (60, 60)).convert_alpha()
+wizard_attack_2_scaled_image = pygame.transform.scale(wizard_attack_2_image, (45, 45)).convert_alpha()
 
 # Number of steps in each animation
 WARRIOR_ANIMATION_STEPS = [10, 8, 1, 7, 7, 3, 7]
@@ -98,8 +98,8 @@ while game_running:
     # Draw Action Bars
     ui.draw_attack_slot(warrior_attack_1_scaled_image, "R", 20, 520)
     ui.draw_attack_slot(warrior_attack_2_scaled_image, "T", 100, 520)
-    ui.draw_attack_slot(wizard_attack_1_scaled_image, ".", 920, 520)
-    ui.draw_attack_slot(wizard_attack_2_scaled_image, ".", 840, 520)
+    ui.draw_attack_slot(wizard_attack_1_scaled_image, "P", 920, 520)
+    ui.draw_attack_slot(wizard_attack_2_scaled_image, "O", 840, 520)
     
     # If countdown at the beginning is over
     if intro_count <= 0:

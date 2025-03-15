@@ -45,5 +45,7 @@ class UI:
         y: Coordinates on Y axis
     """
     def draw_attack_slot(self, attack_image, attack_button, x, y):
-        pygame.draw.rect(self.screen, self.RED, (x, y, 60, 60))
-        self.screen.blit(attack_image, (x, y))
+        attack_btn_font = pygame.font.Font("assets/fonts/nova.ttf", 17)
+        pygame.draw.rect(self.screen, self.RED, (x, y, 60, 60), border_radius=10)
+        self.screen.blit(attack_image, (x + 7, y + 7))
+        self.draw_text(attack_button, attack_btn_font, self.WHITE, x - 12, y + 35)
